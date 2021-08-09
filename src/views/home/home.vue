@@ -9,6 +9,9 @@
     </div>
     <sample></sample>
     <myarticle></myarticle>
+    <transition name="toTop">
+    <div class="toTop" ref="toTop" v-if="show" key="toTop" @click="toTop"><toTop></toTop></div>
+    </transition>
     <myfooter></myfooter>
   </div>
 </template>
@@ -18,20 +21,34 @@ import top from "./homechildren/top.vue";
 import sample from "./homechildren/sample.vue";
 import myarticle from "./homechildren/myarticle.vue";
 import myfooter from "@/components/myfooter.vue";
+import toTop from "./homechildren/toTop.vue";
 export default {
   data() {
-    return {};
+    return {
+      show:false,
+    };
   },
   methods: {
+    toTop(){
+ window.scroll({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
     handleScroll() {
       let scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
       if (scrollTop > 0) {
-        this.$store.commit("isNavShow");
+        this.$store.commit("isScroll");
       } else {
-        this.$store.commit("noNavShow");
+        this.$store.commit("noScroll");
+      }
+      if (scrollTop >= 750) {
+       this.show=true;
+      }else{
+        this.show=false;
       }
     },
   },
@@ -44,14 +61,29 @@ export default {
     sample,
     myarticle,
     myfooter,
+    toTop,
   },
 };
 </script>
 <style lang="scss" scoped>
+.toTop-enter-active, .toTop-leave-active {
+  transition: opacity .8s;
+}
+.toTop-enter, .toTop-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 .home {
+  min-width: 825px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  position: relative;
+  transform: none;
+  .toTop {
+    position: fixed;
+    right: 200px;
+    top: 400px;
+  }
   .out {
     width: 55%;
     display: flex;

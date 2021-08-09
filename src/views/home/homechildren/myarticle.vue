@@ -8,33 +8,40 @@
       v-for="(item, index) in myBlog"
       :key="index"
       :class="{ articleItem1: index % 2 == 0, articleItem2: index % 2 == 1 }"
+      @click="toArticle"
     >
       <div class="img"><img :src="myBlog[index].image" alt="" /></div>
       <div class="resume">
+        <br>
         <div class="info time">
           <span class="icon iconfont iconexit">&#xe667; </span> &nbsp;{{
             item.time
           }}
         </div>
+        <br>
         <div class="info title">{{ item.title }}</div>
+        <br>
         <div class="info type">
-          <span class="icon iconfont iconexit">&#xe659; </span>{{
-            item.type
-          }}
-          &nbsp; ·&nbsp;<span class="icon iconfont iconexit">&#xe65a; </span>
+          <span class="icon iconfont iconexit">&#xe659; </span
+          >{{ item.type }} &nbsp; ·&nbsp;<span class="icon iconfont iconexit"
+            >&#xe65a;
+          </span>
           {{ item.tag }}
         </div>
+        <br>
         <div class="info des">
           <span class="icon iconfont iconexit">&#xe662; </span> &nbsp;{{
             item.description
           }}
         </div>
-        <div class="info">···</div>
+        <br>
+        <br>
+        <div class="info point">···</div>
       </div>
     </div>
-       <el-row class="button">
-        <el-button round>加载更多</el-button>
-      </el-row>
+    <el-row class="button">
+      <el-button round>加载更多</el-button>
+    </el-row>
   </div>
 </template>
 
@@ -87,6 +94,11 @@ export default {
       ],
     };
   },
+  methods: {
+    toArticle() {
+      this.$router.push("article");
+    },
+  },
   components: {
     mytitle,
   },
@@ -94,7 +106,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 #myarticle {
-  width: 55%;
+  width: 845px;
   margin-top: 30px;
   .articleItem1 {
     box-shadow: 0px 0px 15px #888888;
@@ -102,9 +114,9 @@ export default {
     flex-direction: row;
     border-radius: 15px;
     width: calc(100% - 20px);
-    height: 40vh;
+    height: 300px;
     margin: 35px 10px;
-    
+
     .img {
       overflow: hidden;
       width: 55%;
@@ -125,12 +137,11 @@ export default {
     .resume {
       width: 45%;
       .info {
-        padding: 15px 32px;
+        padding: 0 32px;
         width: 100%;
         text-align: right;
       }
-      .info:nth-child(5){
-        margin-top:20px;
+      .point {
         font-size: 40px;
         font-weight: bold;
       }
@@ -168,7 +179,7 @@ export default {
       }
     }
   }
-  .button{
+  .button {
     display: flex;
     justify-content: center;
   }

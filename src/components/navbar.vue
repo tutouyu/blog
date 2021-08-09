@@ -1,17 +1,18 @@
 <template>
   <div>
     <transition mode="out-in" name="slide-fade">
-      <div v-if="!isShow" id="nav1" @mouseenter="over" key="nav1">
+      <div id="nav1" v-if="isShow === 'blank'"></div>
+      <div v-if="isShow === 'onlyName'" id="nav1" @mouseenter="over" key="nav1">
         <div class="left"><span>爱敲代码の</span>秃头鱼</div>
       </div>
-      <div v-else id="nav2" @mouseleave="out" key="nav2">
+      <div v-if="isShow === 'trueNav'" id="nav2" @mouseleave="out" key="nav2">
         <div class="left"><span>爱敲代码の</span>秃头鱼</div>
         <div class="right">
           <div class="right-content">
             <div class="right-item" @click="toHome">
               <span class="icon iconfont iconexit">&#xe63a; </span>首页
             </div>
-            <div class="right-item" @click="toTime">
+            <div class="right-item" @click="toTimeLine">
               <span class="icon iconfont iconexit">&#xe63e; </span>归档
             </div>
             <div class="right-item">
@@ -26,9 +27,9 @@
                 <div @click="toGame">
                   <span class="icon iconfont iconexit"> &#xe646; </span>游戏
                 </div>
-                <div @click="toBook">
+                <!-- <div @click="toBook">
                   <span class="icon iconfont iconexit"> &#xe650; </span>书籍
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="right-item" @click="toMessage">
@@ -48,53 +49,80 @@
 export default {
   data() {
     return {
-      navShow: false,
-      navFlag: true,
+      isTouch: false,
     };
   },
   computed: {
     isShow() {
-      return this.navShow||this.$store.state.navShow || this.$store.state.isOther;//悬浮 滚动 其他页面三种任意一种触发导航栏
+      if (this.$store.state.isOther === "enter") {
+        return "blank";
+      } else if (
+        this.isTouch ||
+        this.$store.state.isScroll ||
+        this.$store.state.isOther === "is"
+      ) {
+        return "trueNav";
+      } else if (
+        !this.isTouch &&
+        !this.$store.state.isScroll &&
+        this.$store.state.isOther == "no"
+      ) {
+        return "onlyName";
+      }
     },
   },
   methods: {
     over() {
-      this.navShow=true;
+      this.isTouch = true;
     },
     out() {
-      this.navShow=false;
+      this.isTouch = false;
     },
     toHome() {
       this.$store.commit("noOther");
       this.$router.push("home");
     },
     toAbout() {
-      this.$store.commit("isOther");
+      if (this.$store.state.isOther != "is") {
+        this.$store.commit("enterOther");
+      }
       this.$router.push("about");
     },
     toMessage() {
-      this.$store.commit("isOther");
+      if (this.$store.state.isOther != "is") {
+        this.$store.commit("enterOther");
+      }
       this.$router.push("message");
     },
     toBook() {
-      this.$store.commit("isOther");
+      if (this.$store.state.isOther != "is") {
+        this.$store.commit("enterOther");
+      }
       this.$router.push("book");
     },
     toAnime() {
-      this.$store.commit("isOther");
+      if (this.$store.state.isOther !="is") {
+        this.$store.commit("enterOther");
+      }
       this.$router.push("anime");
     },
     toGame() {
-      this.$store.commit("isOther");
+      if (this.$store.state.isOther !="is") {
+        this.$store.commit("enterOther");
+      }
       this.$router.push("game");
     },
     toMusic() {
-      this.$store.commit("isOther");
+      if (this.$store.state.isOther !="is") {
+        this.$store.commit("enterOther");
+      }
       this.$router.push("music");
     },
-    toTime() {
-      this.$store.commit("isOther");
-      this.$router.push("time");
+    toTimeLine() {
+      if (this.$store.state.isOther != "is") {
+        this.$store.commit("enterOther");
+      }
+      this.$router.push("timeLine");
     },
   },
 };
@@ -137,19 +165,19 @@ export default {
         margin: 0 15px;
         transition: all 0.4s ease;
         &:hover {
-          color: #d3a4ff;
+          //导航栏触碰动画
+          animation: word 2s infinite;
           span {
-            animation: word 2s infinite;
           }
           @keyframes word {
             0% {
-              font-size: 20px;
+              transform: translateY(2px);
             }
             50% {
-              font-size: 30px;
+              transform: translateY(-2px);
             }
             100% {
-              font-size: 20px;
+              transform: translateY(2px);
             }
           }
           &::after {
@@ -157,6 +185,7 @@ export default {
           }
         }
         &::after {
+          //下标线动画
           content: "";
           display: block;
           height: 5px;
@@ -167,7 +196,9 @@ export default {
           transition: all 0.3s ease-in-out;
           transform: scale3d(0, 1, 1);
         }
-        &:nth-child(3):hover {
+        &:nth-child(3):hover,
+        &:nth-child(2):hover {
+          //下拉菜单动画
           .drowList {
             display: block;
             animation: drowList 0.7s;
@@ -184,6 +215,7 @@ export default {
           }
         }
         .drowList {
+          //下拉菜单
           transition: all 2s linear;
           color: rgb(44, 41, 41);
           width: 140%;
@@ -218,7 +250,8 @@ export default {
   }
 }
 .slide-fade-enter-active {
-  transition: all 0.6s ease;
+  //导航栏切换动画
+  transition: all 0.8s ease;
 }
 
 .slide-fade-enter,
@@ -226,14 +259,16 @@ export default {
   opacity: 0;
 }
 .slide-fade-enter-active {
+  //标签进入动画
   .right-content {
     transition: all 0.8s ease;
   }
 }
+
 .slide-fade-enter,
 .slide-fade-leave-to {
   .right-content {
-    transform: translate(-40px);
+    transform: translate(-60px);
   }
 }
 </style>

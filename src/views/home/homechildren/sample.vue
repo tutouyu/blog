@@ -41,11 +41,11 @@ export default {
 <style lang="scss" scoped>
 #sample {
   margin-top: 10px;
-  width: 55%;
+  width: 845px;
   display: flex;
   flex-wrap: wrap;
   align-content: space-around;
-  height: 30vh;
+  height: 220px;
   .content {
     padding-top: 10px;
     width: 100%;

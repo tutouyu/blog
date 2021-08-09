@@ -1,7 +1,15 @@
 <template>
   <div>
     <figure class="bg" ref="bg">
-      <div class="personal">
+      <transition-group
+      appear
+      name="flip-list"
+      appear-class="flip-list"
+      appear-to-class="flip-list-to"
+      appear-active-class="flip-listr-active"
+      tag="div"
+    >
+      <div class="personal" key="personal">
         <img
           src="https://img-1306599808.cos.ap-nanjing.myqcloud.com/%E5%A4%B4%E5%83%8F.jpg"
           class="header"
@@ -23,12 +31,7 @@
           />
         </div>
       </div>
-      <transition
-        appear
-        appear-class="custom-appear-class"
-        appear-to-class="custom-appear-to-class"
-        appear-active-class="custom-appear-active-class"
-      >
+      </transition-group>
         <svg
           @click="toBlog"
           t="1627573300267"
@@ -46,7 +49,6 @@
             fill="#ffffff"
           ></path>
         </svg>
-      </transition>
     </figure>
   </div>
 </template>
@@ -108,9 +110,6 @@ export default {
           " no-repeat fixed center / cover";
       }
     },
-    headRoate() {
-      this.$refs.head.style.animation = "headRoate";
-    },
   },
 };
 </script>
@@ -127,6 +126,14 @@ export default {
   width: 100vw;
   height: 100vh;
   text-align: center;
+    .flip-list,
+  .flip-list-to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .flip-list-active {
+    position: absolute;
+  }
   .arrow {
     position: absolute;
     top: 90%;
@@ -146,6 +153,7 @@ export default {
     }
   }
   .personal {
+    transition: all 0.6s ease;
     .header {
       margin-bottom: 30px;
       width: 130px;

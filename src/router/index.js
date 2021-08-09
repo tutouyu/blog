@@ -4,11 +4,12 @@ import VueRouter from 'vue-router'
 const Home = () => import('../views/home/home.vue')
 const About = () => import('../views/about/about.vue')
 const Message = () => import('../views/message/message.vue')
-const Time = () => import('../views/time/time.vue')
 const Anime = () => import('../views/list/anime/anime.vue')
 const Book = () => import('../views/list/book/book.vue')
 const Music = () => import('../views/list/music/music.vue')
 const Game = () => import('../views/list/game/game.vue')
+const TimeLine = () => import('../views/time/timeLine.vue')
+const Article = () => import('../views/article/article.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -29,8 +30,8 @@ const routes = [
   component: Message
 },
 {
-  path:'/time',
-  component: Time
+  path:'/timeLine',
+  component: TimeLine
 },
 {
   path:'/music',
@@ -48,10 +49,13 @@ const routes = [
   path:'/anime',
   component: Anime
 },
+{
+  path:'/article',
+  component: Article
+},
 ]
 
 const router = new VueRouter({
   routes
 })
-
 export default router

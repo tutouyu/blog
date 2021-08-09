@@ -6,22 +6,25 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state(){
     return {
-      navShow:false, //导航栏显示的吸顶条件
-      isOther:true, //其他页面取消导航栏隐藏
+      isScroll:false, //导航栏显示的吸顶条件
+      isOther:'no', //其他页面取消导航栏隐藏
   }
   },
   mutations: {
-    isNavShow(state){
-       state.navShow=true;
+    isScroll(state){
+       state.isScroll=true;
     },
-    noNavShow(state){
-      state.navShow=false;
+    noScroll(state){
+      state.isScroll=false;
+    },
+    enterOther(state){
+      state.isOther='enter';
     },
     isOther(state){
-      state.isOther=true;
+      state.isOther='is'
     },
     noOther(state){
-      state.isOther=false;
+      state.isOther='no';
     }
   },
   actions: {
