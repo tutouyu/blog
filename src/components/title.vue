@@ -12,7 +12,8 @@ export default {};
 </script>
 <style lang="scss" scoped>
 .title {
-  width: 55vw;
+  width: 100%;
+  min-width: 845px;
   height: 50px;
   font-size: 20px;
   line-height: 50px;

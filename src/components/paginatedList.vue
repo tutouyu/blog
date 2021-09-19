@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="content">
+    <div class="content"  >
       <div
         v-for="(item, index) in showAnimes"
         :key="index"
@@ -10,13 +10,13 @@
         <transition name="fade" mode="out-in">
           <div v-if="isIntro[index] == 1" key="first">
             <img :src="item.img" alt="" />
-            <div>{{ item.cnName }}</div>
-            <div>{{ item.jpName }}</div>
+            <div>{{ item.name }}</div>
+            <div>{{ item.jpname }}</div>
           </div>
           <div v-if="isIntro[index] == 2"></div>
           <div class="introduce" v-if="isIntro[index] == 3" key="second">
-            <h2>{{ item.cnName }}</h2>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.introduce }}
+            <h3>{{ item.name }}</h3>
+            {{ item.des }}
           </div>
         </transition>
       </div>
@@ -36,6 +36,12 @@
 <script>
 export default {
   props: {
+    type:{
+    type:String,
+     default() {
+        return '';
+      },
+    },
     animes: {
       type: Array,
       default() {
@@ -49,11 +55,6 @@ export default {
       showAnimes: [],
       currentPage: 1,
     };
-  },
-  created() {
-    for (let i = 0; i < 6; i++) {
-      this.showAnimes.push(this.animes[i]);
-    }
   },
   methods: {
     show(index) {
@@ -80,6 +81,22 @@ export default {
           this.$set(this.isIntro, i, 1);
         }
       });
+    },
+  },
+  watch: {
+    animes: {
+      handler() {
+        // 监听获取ajax数据
+        console.log(this.article);
+        this.showAnimes = [];
+        for (let i = 0; i < 6; i++) {
+          if (this.animes[i]) {
+            this.showAnimes.push(this.animes[i]);
+          }
+        }
+      },
+      // 监听到数据变化时立即调用
+      immediate: true,
     },
   },
 };
@@ -111,18 +128,23 @@ export default {
     width: 30%;
     height: 280px;
     .introduce {
-      h2 {
-        line-height: 40px;
+      h3 {
+        line-height: 30px;
         text-align: center;
       }
-      line-height: 20px;
-      padding: 15px;
+      line-height: 26px;
+      padding:0 10px;
       text-align: left;
       height: 260px; //减去padding
       font-size: 15px;
       border-radius: 10px;
       background-color: rgba(255, 255, 255, 0.4);
       color: black;
+      overflow: hidden;
+        -webkit-line-clamp: 10;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
     }
     img {
       border-radius: 10px;

@@ -27,9 +27,6 @@
                 <div @click="toGame">
                   <span class="icon iconfont iconexit"> &#xe646; </span>游戏
                 </div>
-                <!-- <div @click="toBook">
-                  <span class="icon iconfont iconexit"> &#xe650; </span>书籍
-                </div> -->
               </div>
             </div>
             <div class="right-item" @click="toMessage">
@@ -37,6 +34,9 @@
             </div>
             <div class="right-item" @click="toAbout">
               <span class="icon iconfont iconexit">&#xe651; </span>关于
+            </div>
+               <div class="right-item" @click="toAdmin" v-if="admin">
+              <span class="icon iconfont iconexit">&#xe64f; </span>后台
             </div>
           </div>
         </div>
@@ -49,6 +49,7 @@
 export default {
   data() {
     return {
+      admin:window.localStorage.getItem('token'),
       isTouch: false,
     };
   },
@@ -83,16 +84,16 @@ export default {
       this.$router.push("home");
     },
     toAbout() {
-      if (this.$store.state.isOther != "is") {
+      if (this.$route.path != "/about") {
         this.$store.commit("enterOther");
+        this.$router.push("about");
       }
-      this.$router.push("about");
     },
     toMessage() {
-      if (this.$store.state.isOther != "is") {
+      if (this.$route.path != "/message") {
         this.$store.commit("enterOther");
+        this.$router.push("message");
       }
-      this.$router.push("message");
     },
     toBook() {
       if (this.$store.state.isOther != "is") {
@@ -101,33 +102,42 @@ export default {
       this.$router.push("book");
     },
     toAnime() {
-      if (this.$store.state.isOther !="is") {
+      if (this.$route.path != "/anime") {
         this.$store.commit("enterOther");
+        this.$router.push("anime");
       }
-      this.$router.push("anime");
     },
     toGame() {
-      if (this.$store.state.isOther !="is") {
+      if (this.$route.path != "/game") {
         this.$store.commit("enterOther");
+        this.$router.push("game");
       }
-      this.$router.push("game");
     },
     toMusic() {
-      if (this.$store.state.isOther !="is") {
+      if (this.$route.path != "/music") {
         this.$store.commit("enterOther");
+        this.$router.push("music");
       }
-      this.$router.push("music");
     },
     toTimeLine() {
-      if (this.$store.state.isOther != "is") {
+      if (this.$route.path != "/timeLine") {
         this.$store.commit("enterOther");
+        this.$router.push("timeLine");
       }
-      this.$router.push("timeLine");
     },
+    toAdmin(){
+      this.$router.push("admin");
+    }
   },
 };
 </script>
 <style lang="scss" scoped>
+@media only screen and (max-width: 1200px) {
+  .right{
+    display:none;
+    
+  }
+}
 #nav1 {
   color: rgb(44, 41, 41);
   width: 100vw;

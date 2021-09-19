@@ -1,36 +1,73 @@
 <template>
   <div class="home">
-    <top ref="top"></top>
+    <top
+      ref="top"
+      v-if="this.$store.state.mine.backgroundImg.length >= 6"
+    ></top>
     <div class="out">
       <div class="tip">
         <span class="icon iconfont iconexit">&#xe650; </span>Welcome to my blog
         !
       </div>
     </div>
-    <sample></sample>
-    <myarticle></myarticle>
+    <sample :samples="samples"></sample>
+    <myarticle :articles="articles" @more="more"></myarticle>
     <transition name="toTop">
-    <div class="toTop" ref="toTop" v-if="show" key="toTop" @click="toTop"><toTop></toTop></div>
+      <div class="toTop" ref="toTop" v-if="show" key="toTop" @click="toTop">
+        <toTop></toTop>
+      </div>
     </transition>
     <myfooter></myfooter>
   </div>
 </template>
 
 <script>
-import top from "./homechildren/top.vue";
-import sample from "./homechildren/sample.vue";
-import myarticle from "./homechildren/myarticle.vue";
-import myfooter from "@/components/myfooter.vue";
-import toTop from "./homechildren/toTop.vue";
+const top = () => import("./homechildren/top.vue");
+const sample = () => import("./homechildren/sample.vue");
+const myarticle = () => import("./homechildren/myarticle.vue");
+const myfooter = () => import("@/components/myfooter.vue");
+const toTop = () => import("./homechildren/toTop.vue");
+import { getArticles } from "@/network/articles.js";
+import { getMine } from "@/network/mine.js";
 export default {
   data() {
     return {
-      show:false,
+      show: false,
+      articles: [],
+      samples: [],
+      mine: {},
+      isFirst: true,
+      articlesNum:1,
     };
   },
+  created() {
+    getMine().then((res) => {
+      this.$store.commit("mine", res);
+    });
+  },
   methods: {
-    toTop(){
- window.scroll({
+    more(){
+        this.articlesNum++;
+        getArticles(this.articlesNum).then((res) => {
+            for (let i = 0; i < res.length; i++) {
+              res[i].time = res[i].time.slice(0, 10);
+              this.articles.push(res[i]);
+              this.articles[i].content = this.articles[i].content.replaceAll(
+                "&lt;",
+                "<"
+              );
+              this.articles[i].content = this.articles[i].content.replaceAll(
+                "&gt;",
+                ">"
+              );
+              if (res[i].star == 1) {
+                this.samples.push(res[i]);
+              }
+            }
+          });
+    },
+    toTop() {
+      window.scroll({
         top: 0,
         behavior: "smooth",
       });
@@ -42,13 +79,33 @@ export default {
         document.body.scrollTop;
       if (scrollTop > 0) {
         this.$store.commit("isScroll");
+        if (this.isFirst) {
+          this.isFirst=false;
+          getArticles(this.articlesNum).then((res) => {
+            for (let i = 0; i < res.length; i++) {
+              res[i].time = res[i].time.slice(0, 10);
+              this.articles.push(res[i]);
+              this.articles[i].content = this.articles[i].content.replaceAll(
+                "&lt;",
+                "<"
+              );
+              this.articles[i].content = this.articles[i].content.replaceAll(
+                "&gt;",
+                ">"
+              );
+              if (res[i].star == 1) {
+                this.samples.push(res[i]);
+              }
+            }
+          });
+        }
       } else {
         this.$store.commit("noScroll");
       }
       if (scrollTop >= 750) {
-       this.show=true;
-      }else{
-        this.show=false;
+        this.show = true;
+      } else {
+        this.show = false;
       }
     },
   },
@@ -66,10 +123,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.toTop-enter-active, .toTop-leave-active {
-  transition: opacity .8s;
+.toTop-enter-active,
+.toTop-leave-active {
+  transition: opacity 0.8s;
 }
-.toTop-enter, .toTop-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.toTop-enter,
+.toTop-leave-to {
   opacity: 0;
 }
 .home {
@@ -81,11 +140,12 @@ export default {
   transform: none;
   .toTop {
     position: fixed;
-    right: 200px;
-    top: 400px;
+    left: 90%;
+    top: 60%;
   }
   .out {
-    width: 55%;
+    width: 100%;
+    min-width: 845px;
     display: flex;
     justify-content: center;
     .tip {
@@ -93,7 +153,7 @@ export default {
       border-radius: 5px;
       font-weight: bold;
       font-size: 20px;
-      width: 40%;
+      width: 300px;
       line-height: 40px;
       height: 50px;
       border-bottom: 2px dotted rgb(190, 189, 189);

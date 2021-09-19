@@ -10,16 +10,23 @@
       <div class="saying">分享知识与生活!</div>
     </div>
     <div class="number">
-      <div>文章<br /><span>25</span></div>
-      <div>标签<br /><span>32</span></div>
-      <div>分类<br /><span>15</span></div>
+      <div>文章<br /><span>{{num.article}}</span></div>
+      <div>标签<br /><span>{{num.tag}}</span></div>
+      <div>分类<br /><span>{{num.type}}</span></div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  methods: {},
+  props: {
+    num: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
 };
 </script>
 <style lang="scss"scoped>

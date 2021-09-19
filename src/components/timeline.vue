@@ -1,18 +1,23 @@
 <template>
   <div id="timeline">
-    <div class="timeline" v-if="isArticle">
-      <div class="top">文章总览-125</div>
+    <div class="timeline" v-if="article.length">
+      <div class="top">{{title}}-{{ article.length }}</div>
       <transition-group name="flip-list" tag="ul">
-        <div class="item" v-for="(item, index) in showArticles" :key="index">
-          <div class="img"><img :src="article[index].img" alt="" /></div>
+        <div
+          class="item"
+          v-for="(item, index) in showArticles"
+          :key="index"
+          @click="toArticle(index)"
+        >
+          <div class="img"><img :src="item.img" alt="" /></div>
           <div class="info">
             <div class="infoitem">
               <span class="icon iconfont iconexit">&#xe666;</span>&nbsp;{{
-                article[index].time
+                item.time
               }}
             </div>
-            <div class="infoitem">{{ article[index].title }}</div>
-            <div class="infoitem">{{ article[index].content }}</div>
+            <div class="infoitem">{{ item.title }}</div>
+            <div class="infoitem">{{ item.des }}</div>
           </div>
         </div>
       </transition-group>
@@ -32,38 +37,71 @@
 
 <script>
 export default {
-  mounted() {
-    if (this.article.length == 0) {
-      this.isArticle = false;
-      alert("没文章");
-    }
-  },
-  created() {
+  created(){
     for (let i = 0; i < 4; i++) {
-      this.showArticles.push(this.article[i]);
-    }
+          if (this.article[i]) {
+            this.showArticles.push(this.article[i]);
+          }
+        }
   },
   methods: {
+    toArticle(index) {
+      this.showArticles[index].content = this.showArticles[
+        index
+      ].content.replaceAll("&lt;", "<");
+      this.showArticles[index].content = this.showArticles[
+        index
+      ].content.replaceAll("&gt;", ">");
+       this.showArticles[index].content = this.showArticles[
+        index
+      ].content.replaceAll("&amp;lt;", "<.");
+      this.showArticles[index].content = this.showArticles[
+        index
+      ].content.replaceAll("&amp;gt;", ">");
+      this.$store.commit("showArticles", this.showArticles[index]);
+      this.$router.push("article");
+    },
     handleCurrentChange(current) {
       this.showArticles.splice(0, 4);
       this.currentPage = current;
       for (let i = (this.currentPage - 1) * 4; i < this.currentPage * 4; i++) {
-        if (this.article[i]) this.showArticles.push(this.article[i]);
+        if (this.article[i]) {
+          this.showArticles.push(this.article[i]);
+        }
       }
     },
   },
   data() {
     return {
-      isArticle: true,
       currentPage: 1,
       showArticles: [],
     };
+  },
+  watch: {
+    article: {
+      handler() {
+        console.log(this.article);
+        this.showArticles = [];
+        for (let i = 0; i < 4; i++) {
+          if (this.article[i]) {
+            this.showArticles.push(this.article[i]);
+          }
+        }
+      },
+      immediate: true,
+    },
   },
   props: {
     article: {
       type: Array,
       default() {
         return [];
+      },
+    },
+     title: {
+      type: String,
+      default() {
+        return '文章总览';
       },
     },
   },
@@ -131,7 +169,7 @@ export default {
     padding: 15px;
     .img {
       overflow: hidden;
-      width: 400px;
+      width: 200px;
       height: 120px;
       border-radius: 15px;
       img {
@@ -147,7 +185,9 @@ export default {
       }
     }
     .info {
+      width: 430px;
       .infoitem {
+        padding-left: 10px;
         margin: 12px;
       }
       .infoitem:nth-child(1) {

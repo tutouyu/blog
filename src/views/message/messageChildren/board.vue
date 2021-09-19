@@ -14,13 +14,35 @@
     >
     </el-input>
     <el-row>
-      <el-button type="warning" round class="button">提交</el-button>
+      <el-button type="warning" round class="button" @click="submit"
+        >提交</el-button
+      >
     </el-row>
   </div>
 </template>
 
 <script>
 export default {
+  methods: {
+    filterXSS(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/ /g, "&nbsp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
+        .replace(/\r{0,}\n/g, "<br/>");
+    },
+    submit() {
+      this.$emit("comment", {
+        name: this.name == "" ? "dudu" : this.name,
+        mail: this.mail,
+        content: filterXSS(this.comment),
+      });
+    },
+  },
+
   data() {
     return {
       name: "",
@@ -33,8 +55,10 @@ export default {
 <style></style>
 <style lang="scss" scoped>
 #board {
+  box-shadow: 0px 0px 5px #2e2d2d;
   border-radius: 15px;
   background-color: rgba(170, 170, 170, 0.7);
+  margin-top: 15px;
   padding: 20px;
   width: 600px;
   display: flex;

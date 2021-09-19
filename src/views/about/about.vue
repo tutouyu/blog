@@ -25,7 +25,12 @@
           <div>一样的女旁友，</div>
           <p>嘿嘿嘿</p>
         </div>
-        <img src="@/assets/img/head/六花.jpg" alt="" />
+        <canvas
+          id="particale-canvas"
+          width="300px"
+          height="300px"
+          class="img"
+        ></canvas>
         <div class="name">
           <p>秃</p>
           <p>头</p>
@@ -33,27 +38,42 @@
         </div>
       </div>
     </transition-group>
-
     <myfooter class="footer"></myfooter>
   </div>
 </template>
 
 <script>
 import myfooter from "@/components/myfooter.vue";
+import { Particale } from "@/common/particle.js";
 export default {
   data() {
-    return {};
+    return {
+      isLoad: true,
+    };
   },
-  methods: {},
+  created() {
+  },
   mounted() {
+    const particale = new Particale({
+      warp: document.getElementById("particale-canvas"),
+      imgsUrl: [
+        "assets/img/head/六花.jpg",
+        "assets/img/head/六花2.jpg",
+        "assets/img/head/六花3.jpg",
+        "assets/img/head/六花5.jpg",
+      ],
+      radius: 1.5,
+    });
     this.$nextTick(function () {
-      this.$store.commit("isOther");
+      setTimeout(() => {
+        this.$store.commit("isOther");
+      }, 500);
     });
     setTimeout(() => {
       let divTyping = document.getElementById("text");
-      let i = 0,
-        timer = 0,
-        str = "新垣结衣or小鸟游六花or杨超越";
+      let i = 0;
+      let timer = 0;
+      let str = "新垣结衣or小鸟游六花or杨超越";
       function typing() {
         if (i <= str.length) {
           divTyping.innerHTML = str.slice(0, i++) + "_";
@@ -75,7 +95,7 @@ export default {
 #mine {
   width: 100%;
   height: 100vh;
-  background: url(https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg-8.png)
+  background: url(https://blog-1306599808.file.myqcloud.com/other/bg-8.webp)
     fixed no-repeat center;
   background-size: cover;
   display: flex;
@@ -121,10 +141,10 @@ export default {
         }
       }
     }
-    img {
-      width: 250px;
-      height: 250px;
+    .img {
       border-radius: 100%;
+      overflow: hidden;
+      background-color: white;
     }
     .name {
       font-family: mFont;
@@ -159,4 +179,4 @@ export default {
     align-self: flex-end;
   }
 }
-</style>>
+</style>

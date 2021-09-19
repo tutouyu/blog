@@ -5,22 +5,24 @@
       <span slot="title">文章</span></mytitle
     >
     <div
-      v-for="(item, index) in myBlog"
+      v-for="(item, index) in articles"
       :key="index"
       :class="{ articleItem1: index % 2 == 0, articleItem2: index % 2 == 1 }"
-      @click="toArticle"
+      @click="toArticle(index)"
     >
-      <div class="img"><img :src="myBlog[index].image" alt="" /></div>
+      <div class="img">
+        <img v-lazy="item.img" alt="assets/img/lazy/error.jpeg" />
+      </div>
       <div class="resume">
-        <br>
+        <br />
         <div class="info time">
           <span class="icon iconfont iconexit">&#xe667; </span> &nbsp;{{
             item.time
           }}
         </div>
-        <br>
+        <br />
         <div class="info title">{{ item.title }}</div>
-        <br>
+        <br />
         <div class="info type">
           <span class="icon iconfont iconexit">&#xe659; </span
           >{{ item.type }} &nbsp; ·&nbsp;<span class="icon iconfont iconexit"
@@ -28,19 +30,19 @@
           </span>
           {{ item.tag }}
         </div>
-        <br>
+        <br />
         <div class="info des">
           <span class="icon iconfont iconexit">&#xe662; </span> &nbsp;{{
-            item.description
+            item.des
           }}
         </div>
-        <br>
-        <br>
+        <br />
+        <br />
         <div class="info point">···</div>
       </div>
     </div>
     <el-row class="button">
-      <el-button round>加载更多</el-button>
+      <el-button round @click="more">加载更多</el-button>
     </el-row>
   </div>
 </template>
@@ -48,54 +50,31 @@
 <script>
 import mytitle from "@/components/title.vue";
 export default {
+  props: {
+    articles: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
   data() {
-    return {
-      myBlog: [
-        {
-          time: "2010-02-03 15:03",
-          title: "js天下第一! js天下第一",
-          image: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg5.png",
-          type: "js",
-          tag: "技术",
-          description: "js为什么天下第一呢 因为我说的",
-        },
-        {
-          time: "2010-02-03 15:03",
-          title: "js天下第一! js天下第一",
-          image: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg5.png",
-          type: "js",
-          tag: "技术",
-          description: "js为什么天下第一呢 因为我说的",
-        },
-        {
-          time: "2010-02-03 15:03",
-          title: "js天下第一! js天下第一",
-          image: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg5.png",
-          type: "js",
-          tag: "技术",
-          description: "js为什么天下第一呢 因为我说的",
-        },
-        {
-          time: "2010-02-03 15:03",
-          title: "js天下第一! js天下第一",
-          image: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg5.png",
-          type: "js",
-          tag: "技术",
-          description: "js为什么天下第一呢 因为我说的",
-        },
-        {
-          time: "2010-02-03 15:03",
-          title: "js天下第一! js天下第一",
-          image: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg5.png",
-          type: "js",
-          tag: "技术",
-          description: "js为什么天下第一呢 因为我说的",
-        },
-      ],
-    };
+    return {};
   },
   methods: {
-    toArticle() {
+    more() {
+      this.$emit("more");
+    },
+    toArticle(index) {
+      this.articles[index].content = this.articles[index].content.replaceAll(
+        "&amp;lt;",
+        "<."
+      );
+      this.articles[index].content = this.articles[index].content.replaceAll(
+        "&amp;gt;",
+        ">"
+      );
+      this.$store.commit("showArticles", this.articles[index]);
       this.$router.push("article");
     },
   },
@@ -106,7 +85,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 #myarticle {
-  width: 845px;
+  width: 55%;
+  min-width: 845px;
   margin-top: 30px;
   .articleItem1 {
     box-shadow: 0px 0px 15px #888888;
@@ -114,17 +94,18 @@ export default {
     flex-direction: row;
     border-radius: 15px;
     width: calc(100% - 20px);
-    height: 300px;
+    height: 35vh;
+    min-height: 300px;
     margin: 35px 10px;
-
     .img {
       overflow: hidden;
       width: 55%;
-      height: 40vh;
+      height: 35vh;
+      min-height: 300px;
       border-radius: 15px 0 0 15px;
       img {
         width: 100%;
-        height: 40vh;
+        height: 100%;
         transition: all 0.3s ease;
       }
     }

@@ -13,7 +13,7 @@
         ><br /><span>It's my lovest songs</span>
       </div>
       <div class="container" key="container">
-        <aplayer :music="audio[0]" :list="audio" :showlrc="true"></aplayer>
+        <aplayer :music="audio[0]" :list="audio" :showlrc="true" :autoplay="true"></aplayer>
       </div>
     </transition-group>
     <myfooter class="footer"></myfooter>
@@ -23,6 +23,7 @@
 <script>
 import aplayer from "vue-aplayer";
 import myfooter from "@/components/myfooter.vue";
+import { getMusic } from "@/network/list.js";
 export default {
   data() {
     return {
@@ -35,55 +36,22 @@ export default {
           pic: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg11.png",
           lrc: "",
         },
-        {
-          title: "A Little Story",
-          artist: "Valentin",
-          url: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/music/Valentin%20-%20A%20Little%20Story.mp3",
-          pic: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg11.png",
-          lrc: "",
-        },
-        {
-          title: "again",
-          artist: "YUI",
-          url: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/music/YUI%20-%20again.mp3",
-          pic: 'https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg11.png', // prettier-ignore
-          lrc: "",
-        },
-        {
-          title: "樱花樱花想见你",
-          artist: "ゆう十",
-          url: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/music/%E3%82%86%E3%81%86%E5%8D%81%20-%20%E6%A8%B1%E8%8A%B1%E6%A8%B1%E8%8A%B1%E6%83%B3%E8%A7%81%E4%BD%A0%EF%BC%88Cover%20RSP%EF%BC%89.mp3",
-          pic: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg11.png",
-          lrc: "",
-        },
-        {
-          title: "化身孤岛的蓝鲸",
-          artist: "不才",
-          url: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/music/%E4%B8%8D%E6%89%8D%20-%20%E5%8C%96%E8%BA%AB%E5%AD%A4%E5%B2%9B%E7%9A%84%E9%B2%B8.mp3",
-          pic: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg11.png",
-          lrc: "",
-        },
-        {
-          title: "爱人错过",
-          artist: "初月",
-          url: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/music/%E5%88%9D%E6%9C%88%20-%20%E7%88%B1%E4%BA%BA%E9%94%99%E8%BF%87.mp3",
-          pic: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg11.png",
-          lrc: "",
-        },
-        {
-          title: "我吹过你吹过的晚风",
-          artist: "崔小茶tea",
-          url: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/music/%E5%B4%94%E5%B0%8F%E8%8C%B6tea%20-%20%E6%88%91%E5%90%B9%E8%BF%87%E4%BD%A0%E5%90%B9%E8%BF%87%E7%9A%84%E6%99%9A%E9%A3%8E.mp3",
-          pic: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg11.png",
-          lrc: "",
-        },
       ],
     };
+  },
+  created(){
+       getMusic().then((res) => {
+      for (let i = 0; i < res.length; i++) {
+        this.audio.push(res[i]);
+      }
+    });
   },
   components: { aplayer, myfooter },
   mounted() {
     this.$nextTick(function () {
-      this.$store.commit("isOther");
+      setTimeout(() => {
+        this.$store.commit("isOther");
+      }, 500);
     });
   },
 };
@@ -92,7 +60,7 @@ export default {
 #music {
   width: 100%;
   height: 100vh;
-  background: url(https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg13.png)
+  background: url(https://blog-1306599808.file.myqcloud.com/other/bg13.webp)
     fixed no-repeat center;
   background-size: cover;
   display: flex;
@@ -107,11 +75,9 @@ export default {
     transition: all 0.8s ease;
   }
   .flip-list,
-  .flip-list-to {
+  .flip-list-active {
     opacity: 0;
     transform: translateY(30px);
-  }
-  .flip-list-active {
     position: absolute;
   }
   .title {

@@ -1,11 +1,11 @@
 <template>
   <div id="sample">
-    <mytitle><span slot="icon">&#xe637; </span> <span slot="title">推荐</span></mytitle>
+    <mytitle style="width:100%"><span slot="icon">&#xe637; </span> <span slot="title">推荐</span></mytitle>
     <div class="content">
-      <div v-for="(item, index) in sample" :key="index" class="article">
-        <img :src="sample[index].image" alt="" />
+      <div v-for="(item, index) in samples" :key="index" class="article"  @click="toArticle(index)">
+        <img v-lazy="item.img" alt="assets/img/lazy/error.jpeg" />
         <div class="overWord">
-          <span>{{ sample[index].title }}</span>
+          <span>{{ item.title }}</span>
         </div>
       </div>
     </div>
@@ -15,22 +15,34 @@
 <script>
 import mytitle from "@/components/title.vue";
 export default {
+   methods: {
+    toArticle(index) {
+       this.samples[index].content = this.samples[index].content.replaceAll(
+        "&amp;nbsp;",
+        ""
+      );
+      this.samples[index].content = this.samples[index].content.replaceAll(
+        "&amp;lt;",
+        "<."
+      );
+      this.samples[index].content = this.samples[index].content.replaceAll(
+        "&amp;gt;",
+        ">"
+      );
+      this.$store.commit("showArticles", this.samples[index]);
+      this.$router.push("article");
+    },
+  },
+   props: {
+    samples: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
   data() {
     return {
-      sample: [
-        {
-          image: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg6.png",
-          title: "第一篇",
-        },
-        {
-          image: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg6.png",
-          title: "第二篇",
-        },
-        {
-          image: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg6.png",
-          title: "第三篇",
-        },
-      ],
     };
   },
   components: {
@@ -41,11 +53,13 @@ export default {
 <style lang="scss" scoped>
 #sample {
   margin-top: 10px;
-  width: 845px;
+  width: 55%;
+  min-width: 845px;
   display: flex;
   flex-wrap: wrap;
   align-content: space-around;
-  height: 220px;
+  height: 25vh;
+  min-height: 220px;
   .content {
     padding-top: 10px;
     width: 100%;

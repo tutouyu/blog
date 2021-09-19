@@ -1,6 +1,6 @@
 <template>
   <div>
-    <figure class="bg" ref="bg">
+    <div class="bg" ref="bg">
       <transition-group
       appear
       name="flip-list"
@@ -11,7 +11,8 @@
     >
       <div class="personal" key="personal">
         <img
-          src="https://img-1306599808.cos.ap-nanjing.myqcloud.com/%E5%A4%B4%E5%83%8F.jpg"
+          src="https://blog-1306599808.file.myqcloud.com/other/a.webp"
+          alt="assets/img/lazy/error.jpeg"
           class="header"
           ref="head"
         />
@@ -19,14 +20,16 @@
           <img
             @click="turnLeft"
             src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/other/next-b.svg"
+            alt="assets/img/lazy/error.jpeg"
             class="left"
           />
-          <div>听好了傻逼们，老子叫秃头鱼</div>
+          <div>{{this.$store.state.mine.headsaying[0]}}</div>
           <br />
-          <div>这老子的个人网站 啊呸</div>
+          <div>{{this.$store.state.mine.headsaying[1]}}</div>
           <img
             @click="turnRight"
             src="https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/other/next-b.svg"
+            alt="assets/img/lazy/error.jpeg"
             class="right"
           />
         </div>
@@ -49,7 +52,7 @@
             fill="#ffffff"
           ></path>
         </svg>
-    </figure>
+    </div>
   </div>
 </template>
 
@@ -57,15 +60,7 @@
 export default {
   data() {
     return {
-      imgUrl: [
-        "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg1.png",
-        "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg2.png",
-        "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg3.png",
-        "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg4.png",
-        "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg5.png",
-        "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg6.png",
-        "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg7.png",
-      ],
+      imgUrl: this.$store.state.mine.backgroundImg,
       imgIndex: 0,
     };
   },
@@ -119,7 +114,7 @@ export default {
   align-items: center;
   justify-content: center;
   z-index: -1;
-  background: url("https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg1.png");
+  background: url("https://blog-1306599808.file.myqcloud.com/other/bg1.webp");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -127,11 +122,9 @@ export default {
   height: 100vh;
   text-align: center;
     .flip-list,
-  .flip-list-to {
-    opacity: 0;
+  .flip-list-active { 
+      opacity: 0;
     transform: translateY(30px);
-  }
-  .flip-list-active {
     position: absolute;
   }
   .arrow {

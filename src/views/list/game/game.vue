@@ -12,7 +12,7 @@
         ><br /><span>It's my greatest preasure</span>
       </div>
       <div class="content" key="content">
-        <paginatedList :animes="animes"></paginatedList>
+        <paginatedList :animes="animes" type="game"></paginatedList>
       </div>
     </transition-group>
     <myfooter></myfooter>
@@ -22,83 +22,32 @@
 <script>
 import myfooter from "@/components/myfooter.vue";
 import paginatedList from "@/components/paginatedList.vue";
+import { getGame } from "@/network/list.js";
 export default {
   data() {
     return {
-      animes: [
-        {
-          cnName: "中二病也要谈恋爱！",
-          jpName: "中二病でも恋がしたい！",
-          img: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg12.png",
-          introduce:
-            "男主角富樫勇太在国中时是一名邪眼系的中二病患者，但上了高中便从中二病毕业了。可是，原本打算忘掉过去黑历史的勇太，与他同班的女主角小鸟游六花，自称“邪王真眼的使用者”的现任中二病却强逼勇太与她立下契约！而另一方面，勇太在国中时唯一理解他的朋友七宫智音，自称“索非亚琳·SP·撒旦7世”的超中二者也再次出现在勇太的面前，于是勇太那中二病的黑历史正渐渐再次浮现。 [1]",
-        },
-        {
-          cnName: "中二病也要谈恋爱！",
-          jpName: "中二病でも恋がしたい！",
-          img: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg12.png",
-          introduce:
-            "男主角富樫勇太在国中时是一名邪眼系的中二病患者，但上了高中便从中二病毕业了。可是，原本打算忘掉过去黑历史的勇太，与他同班的女主角小鸟游六花，自称“邪王真眼的使用者”的现任中二病却强逼勇太与她立下契约！而另一方面，勇太在国中时唯一理解他的朋友七宫智音，自称“索非亚琳·SP·撒旦7世”的超中二者也再次出现在勇太的面前，于是勇太那中二病的黑历史正渐渐再次浮现。 [1]",
-        },
-        {
-          cnName: "中二病也要谈恋爱！",
-          jpName: "中二病でも恋がしたい！",
-          img: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg12.png",
-          introduce:
-            "男主角富樫勇太在国中时是一名邪眼系的中二病患者，但上了高中便从中二病毕业了。可是，原本打算忘掉过去黑历史的勇太，与他同班的女主角小鸟游六花，自称“邪王真眼的使用者”的现任中二病却强逼勇太与她立下契约！而另一方面，勇太在国中时唯一理解他的朋友七宫智音，自称“索非亚琳·SP·撒旦7世”的超中二者也再次出现在勇太的面前，于是勇太那中二病的黑历史正渐渐再次浮现。 [1]",
-        },
-        {
-          cnName: "中二病也要谈恋爱！",
-          jpName: "中二病でも恋がしたい！",
-          img: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg12.png",
-          introduce:
-            "男主角富樫勇太在国中时是一名邪眼系的中二病患者，但上了高中便从中二病毕业了。可是，原本打算忘掉过去黑历史的勇太，与他同班的女主角小鸟游六花，自称“邪王真眼的使用者”的现任中二病却强逼勇太与她立下契约！而另一方面，勇太在国中时唯一理解他的朋友七宫智音，自称“索非亚琳·SP·撒旦7世”的超中二者也再次出现在勇太的面前，于是勇太那中二病的黑历史正渐渐再次浮现。 [1]",
-        },
-        {
-          cnName: "中二病也要谈恋爱！",
-          jpName: "中二病でも恋がしたい！",
-          img: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg12.png",
-          introduce:
-            "男主角富樫勇太在国中时是一名邪眼系的中二病患者，但上了高中便从中二病毕业了。可是，原本打算忘掉过去黑历史的勇太，与他同班的女主角小鸟游六花，自称“邪王真眼的使用者”的现任中二病却强逼勇太与她立下契约！而另一方面，勇太在国中时唯一理解他的朋友七宫智音，自称“索非亚琳·SP·撒旦7世”的超中二者也再次出现在勇太的面前，于是勇太那中二病的黑历史正渐渐再次浮现。 [1]",
-        },
-        {
-          cnName: "中二病也要谈恋爱！",
-          jpName: "中二病でも恋がしたい！",
-          img: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg12.png",
-          introduce:
-            "男主角富樫勇太在国中时是一名邪眼系的中二病患者，但上了高中便从中二病毕业了。可是，原本打算忘掉过去黑历史的勇太，与他同班的女主角小鸟游六花，自称“邪王真眼的使用者”的现任中二病却强逼勇太与她立下契约！而另一方面，勇太在国中时唯一理解他的朋友七宫智音，自称“索非亚琳·SP·撒旦7世”的超中二者也再次出现在勇太的面前，于是勇太那中二病的黑历史正渐渐再次浮现。 [1]",
-        },
-        {
-          cnName: "中二病也要谈恋爱！",
-          jpName: "中二病でも恋がしたい！",
-          img: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg12.png",
-          introduce:
-            "男主角富樫勇太在国中时是一名邪眼系的中二病患者，但上了高中便从中二病毕业了。可是，原本打算忘掉过去黑历史的勇太，与他同班的女主角小鸟游六花，自称“邪王真眼的使用者”的现任中二病却强逼勇太与她立下契约！而另一方面，勇太在国中时唯一理解他的朋友七宫智音，自称“索非亚琳·SP·撒旦7世”的超中二者也再次出现在勇太的面前，于是勇太那中二病的黑历史正渐渐再次浮现。 [1]",
-        },
-        {
-          cnName: "中二病也要谈恋爱！",
-          jpName: "中二病でも恋がしたい！",
-          img: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg12.png",
-          introduce:
-            "男主角富樫勇太在国中时是一名邪眼系的中二病患者，但上了高中便从中二病毕业了。可是，原本打算忘掉过去黑历史的勇太，与他同班的女主角小鸟游六花，自称“邪王真眼的使用者”的现任中二病却强逼勇太与她立下契约！而另一方面，勇太在国中时唯一理解他的朋友七宫智音，自称“索非亚琳·SP·撒旦7世”的超中二者也再次出现在勇太的面前，于是勇太那中二病的黑历史正渐渐再次浮现。 [1]",
-        },
-        {
-          cnName: "中二病也要谈恋爱！",
-          jpName: "中二病でも恋がしたい！",
-          img: "https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg12.png",
-          introduce:
-            "男主角富樫勇太在国中时是一名邪眼系的中二病患者，但上了高中便从中二病毕业了。可是，原本打算忘掉过去黑历史的勇太，与他同班的女主角小鸟游六花，自称“邪王真眼的使用者”的现任中二病却强逼勇太与她立下契约！而另一方面，勇太在国中时唯一理解他的朋友七宫智音，自称“索非亚琳·SP·撒旦7世”的超中二者也再次出现在勇太的面前，于是勇太那中二病的黑历史正渐渐再次浮现。 [1]",
-        },
-      ],
+      animes: [],
     };
+  },
+  created(){
+     getGame().then((res) => {
+       console.log(res)
+       for(let i=0;i<res.length;i++){
+         if(res[i]){
+         this.animes.push(res[i]);}
+       }
+     });
   },
   components: {
     myfooter,
     paginatedList,
   },
   mounted() {
-    this.$nextTick(function () {
-      this.$store.commit("isOther");
+   this.$nextTick(function () {
+      setTimeout(() => {
+        this.$store.commit("isOther");
+      }, 500);
+      
     });
   },
 };
@@ -106,7 +55,7 @@ export default {
 <style lang="scss" scoped>
 #game {
   width: 100%;
-  background: url(https://img-1306599808.cos.ap-nanjing.myqcloud.com/bg14.png)
+  background: url(https://blog-1306599808.file.myqcloud.com/other/bg14.webp)
     fixed no-repeat center;
   background-size: cover;
   display: flex;
@@ -115,12 +64,9 @@ export default {
   align-content: space-around;
   flex-wrap: wrap;
    .flip-list,
-  .flip-list-to {
-    opacity: 0;
-    transform: translateY(30px);
-  }
   .flip-list-active {
-    position: absolute;
+    position: absolute;  opacity: 0;
+    transform: translateY(30px);
   }
   .content{
 transition: all 0.8s ease;
