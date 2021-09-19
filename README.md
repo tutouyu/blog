@@ -1,4 +1,5 @@
-目前只写了首页的前端部分 这个博客是仿照hexo的 全是自己用vue手打的
+这个博客是仿照hexo的 vue+node+sass+mysql+element-ui
+这是地址 www.tutouyu.com
 # myblog
 
 ## Project setup
