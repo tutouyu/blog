@@ -1,5 +1,5 @@
 这个博客是仿照hexo的 vue+node+sass+mysql+element-ui
-这是地址 www.tutouyu.com
+这是地址 tutouyu.com
 # myblog
 
 ## Project setup
