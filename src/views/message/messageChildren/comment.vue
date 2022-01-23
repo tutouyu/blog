@@ -123,7 +123,7 @@ export default {
 <style>
 .el-textarea__inner,                                    /**element-ui组件必须在style里修改 scss修改无效 */
 .el-input__inner {
-  background-color: rgba(243, 243, 243, 0.9);
+  background-color: rgba(255, 255, 255, 0.9);
   border: 0;
 }
 .el-pagination button:disabled,
@@ -157,7 +157,7 @@ export default {
     width: 600px;
     padding: 15px;
     margin: 5px 0;
-    background-color: rgba(170, 170, 170, 0.7);
+    background-color: rgba(206, 206, 206, 0.9);
     span {
       padding: 10px;
       font-size: 10px;

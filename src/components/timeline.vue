@@ -159,7 +159,7 @@ export default {
 }
 .timeline {
   .item {
-    transition: all 1s;
+    transition: all 0.4s;
     height: 150px;
     margin-left: 30px;
     width: calc(100% - 30px);

@@ -1,7 +1,7 @@
 <template>
   <div id="mine">
     <img
-      src="https://img-1306599808.cos.ap-nanjing.myqcloud.com/%E5%A4%B4%E5%83%8F.jpg"
+      src="https://blog-1306599808.file.myqcloud.com/other/a.webp"
       class="header"
       ref="head"
     />

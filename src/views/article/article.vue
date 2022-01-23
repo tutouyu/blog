@@ -18,9 +18,8 @@
 import { addRead } from "@/network/articles.js";
 import myfooter from "@/components/myfooter.vue";
 export default {
-  created(){
-     addRead(this.$store.state.showArticle.id).then((res) => {
-    });
+  created() {
+    addRead(this.$store.state.showArticle.id).then((res) => {});
   },
   data() {
     return {
@@ -45,14 +44,16 @@ export default {
 </script>
 <style lang="scss" scoped>
 #article {
+  background-color: rgb(228, 220, 220);
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   .top {
     width: 100%;
     height: 40vh;
-    background-size: cover;
     display: flex;
+    background-repeat: no-repeat;
+    background-size: 100%;
     justify-content: center;
     align-items: flex-end;
     .title {
@@ -68,30 +69,13 @@ export default {
   }
   .content {
     line-height: 40px;
-    overflow: scroll;
     padding: 30px;
     min-height: 434px;
-    width: 720px;
+    width: 840px;
     margin: 10px 0;
-    border-radius: 20px 0 0 0;
-    background-color: rgba(179, 176, 176, 0.4);
-
-    &::-webkit-scrollbar-track {
-      -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
-      border-radius: 5px;
-      background-color: rgba(255, 255, 255, 0.8);
-    }
-    /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-   &::-webkit-scrollbar {
-      width: 5px;
-      background-color: rgba(0, 0, 0, 0);
-    }
-    /*定义滑块 内阴影+圆角*/
-    &::-webkit-scrollbar-thumb {
-      border-radius: 5px;
-      -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
-      background-color: #555;
-    }
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    box-shadow:2px 2px 10px 1px;
   }
 }
 </style>

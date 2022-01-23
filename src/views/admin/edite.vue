@@ -20,23 +20,15 @@
           </el-menu-item>
           <el-menu-item index="3">
             <i class="el-icon-menu"></i>
-            <span slot="title">番剧</span>
+            <span slot="title">分类</span>
           </el-menu-item>
           <el-menu-item index="4">
             <i class="el-icon-menu"></i>
-            <span slot="title">音乐</span>
-          </el-menu-item>
-          <el-menu-item index="5">
-            <i class="el-icon-menu"></i>
-            <span slot="title">游戏</span>
-          </el-menu-item>
-          <el-menu-item index="6">
-            <i class="el-icon-menu"></i>
-            <span slot="title">分类</span>
+            <span slot="title">直播</span>
           </el-menu-item>
         </el-menu>
       </el-col>
-      <el-col :span="20">
+      <el-col :span="21">
         <el-table
           :data="
             tableData.filter(
@@ -46,8 +38,11 @@
             )
           "
           class="list"
+          height="920"
         >
           <el-table-column label="标题" prop="title" width="200">
+          </el-table-column>
+          <el-table-column label="描述" prop="des" width="200">
           </el-table-column>
           <el-table-column label="分类" prop="type" width="200">
           </el-table-column>
@@ -80,16 +75,19 @@
     >
       <el-form :model="editForm" label-width="80px" ref="editForm">
         <el-form-item label="标题" prop="title">
-          <el-input v-model="editForm.name" auto-complete="off"></el-input>
+          <el-input v-model="editForm.title" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="des">
+          <el-input v-model="editForm.des" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="分类" prop="type">
-          <el-input v-model="editForm.phone" auto-complete="off"></el-input>
+          <el-input v-model="editForm.type" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="标签" prop="tag">
-          <el-input v-model="editForm.mail" auto-complete="off"></el-input>
+          <el-input v-model="editForm.tag" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="内容" prop="content">
-          <el-input v-model="editForm.time" auto-complete="off"></el-input>
+          <el-input v-model="editForm.content" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -103,29 +101,37 @@
 </template>
 
 <script>
+import { getTimeLine, delArticles, editArticles } from "@/network/articles.js";
 import editor from "./Child/editor.vue";
 export default {
   data() {
     return {
-        search:"",
+      search: "",
       editFormVisible: false,
+      articles: [],
       activeIndex: "1",
-      tableData: [{
-          title:"js天下第一",
-          type:"技术",
-          tag:"js",
-      }],
+      tableData: [],
       editIndex: "",
       editForm: {
-        title:"",
-        type:"",
-        tag:"",
-        content:""
+        title: "",
+        type: "",
+        tag: "",
+        content: "",
+        des: "",
       },
+      editindex: 0,
     };
   },
   components: {
     editor,
+  },
+  created() {
+    getTimeLine().then((res) => {
+      for (let i = 0; i < res.length; i++) {
+        res[i].time = res[i].time.slice(0, 10);
+        this.tableData.push(res[i]);
+      }
+    });
   },
   mounted() {
     this.$nextTick(function () {
@@ -139,19 +145,16 @@ export default {
       } else if (index == 2) {
         this.$router.push("edite");
       } else if (index == 3) {
-        this.$router.push("addAnime");
-      } else if (index == 4) {
-        this.$router.push("addMusic");
-      } else if (index == 5) {
-        this.$router.push("addGame");
-      } else if (index == 6) {
         this.$router.push("type");
+      } else if (index == 4) {
+        this.$router.push("view");
       }
     },
     handleEdit(index, row) {
       this.editFormVisible = true;
       this.editIndex = index;
       this.editForm = Object.assign({}, row); //这句是关键！！！
+      this.editindex = index;
     },
     handleClose(done) {
       /*done();
@@ -163,8 +166,18 @@ export default {
     },
     handleUpdate(forName) {
       this.editFormVisible = false;
+      let title = this.editForm.title;
+      let content = this.editForm.content;
+      let type = this.editForm.type;
+      let tag = this.editForm.tag;
+      let des = this.editForm.des;
+      let id = this.tableData[this.editIndex].id;
+      editArticles(title, content, type, tag, des, id).then((res) => {});
     },
     handleDelete(index, row) {
+      console.log(this.tableData[index]);
+      let id = this.tableData[index].id;
+      delArticles(id).then((res) => {});
       this.tableData.splice(index, 1);
     },
   },

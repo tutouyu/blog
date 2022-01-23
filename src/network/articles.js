@@ -13,6 +13,11 @@ export function getTimeLine() {
         url: '/timeline'
     })
 }
+export function getSample() {
+    return request({
+        url: '/articles/sample'
+    })
+}
 export function addRead(id) {
     return request({
         url: '/articles/read',

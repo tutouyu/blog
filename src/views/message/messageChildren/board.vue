@@ -57,7 +57,7 @@ export default {
 #board {
   box-shadow: 0px 0px 5px #2e2d2d;
   border-radius: 15px;
-  background-color: rgba(170, 170, 170, 0.7);
+  background-color: rgba(206, 206, 206, 0.9);
   margin-top: 15px;
   padding: 20px;
   width: 600px;

@@ -3,7 +3,7 @@
     <el-row class="tac">
       <el-col :span="3">
         <el-menu
-          default-active="2"
+          default-active="1"
           class="el-menu-vertical-demo nav"
           background-color="#545c64"
           text-color="#fff"
@@ -20,19 +20,11 @@
           </el-menu-item>
           <el-menu-item index="3">
             <i class="el-icon-menu"></i>
-            <span slot="title">番剧</span>
+            <span slot="title">分类</span>
           </el-menu-item>
           <el-menu-item index="4">
             <i class="el-icon-menu"></i>
-            <span slot="title">音乐</span>
-          </el-menu-item>
-          <el-menu-item index="5">
-            <i class="el-icon-menu"></i>
-            <span slot="title">游戏</span>
-          </el-menu-item>
-          <el-menu-item index="6">
-            <i class="el-icon-menu"></i>
-            <span slot="title">分类</span>
+            <span slot="title">直播</span>
           </el-menu-item>
         </el-menu>
       </el-col>
@@ -57,26 +49,18 @@ export default {
     });
   },
   methods: {
- 
-      select(index) {
-        if(index==1){
-          this.$router.push("admin");
-        } else if(index==2){
-          this.$router.push("edite");
-        }else if(index==3){
-          this.$router.push("addAnime");
-        }
-        else if(index==4){
-          this.$router.push("addMusic");
-        }
-        else if(index==5){
-          this.$router.push("addGame");
-        }
-        else if(index==6){
-          this.$router.push("type");
-        }
-      },
+    select(index) {
+      if (index == 1) {
+        this.$router.push("admin");
+      } else if (index == 2) {
+        this.$router.push("edite");
+      } else if (index == 3) {
+        this.$router.push("type");
+      } else if (index == 4) {
+        this.$router.push("view");
+      }
     },
+  },
 };
 </script>
 <style lang="scss" scoped>

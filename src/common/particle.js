@@ -25,7 +25,7 @@ Particale.prototype = {
         let promiseArr = this.imgsUrl.map(imgUrl => {
             return new Promise((resolve, reject) => {
                 let imgObj = new Image();
-                imgObj.src = require('@/'+imgUrl);
+                imgObj.src = require('@/assets/img/head/六花.jpg');
                 imgObj.onload = () => {
                     this.imgsObj.push(imgObj);
                     console.log(this.imgsObj)

@@ -27,7 +27,7 @@ const sample = () => import("./homechildren/sample.vue");
 const myarticle = () => import("./homechildren/myarticle.vue");
 const myfooter = () => import("@/components/myfooter.vue");
 const toTop = () => import("./homechildren/toTop.vue");
-import { getArticles } from "@/network/articles.js";
+import { getArticles, getSample } from "@/network/articles.js";
 import { getMine } from "@/network/mine.js";
 export default {
   data() {
@@ -37,7 +37,7 @@ export default {
       samples: [],
       mine: {},
       isFirst: true,
-      articlesNum:1,
+      articlesNum: 1,
     };
   },
   created() {
@@ -46,25 +46,17 @@ export default {
     });
   },
   methods: {
-    more(){
-        this.articlesNum++;
-        getArticles(this.articlesNum).then((res) => {
-            for (let i = 0; i < res.length; i++) {
-              res[i].time = res[i].time.slice(0, 10);
-              this.articles.push(res[i]);
-              this.articles[i].content = this.articles[i].content.replaceAll(
-                "&lt;",
-                "<"
-              );
-              this.articles[i].content = this.articles[i].content.replaceAll(
-                "&gt;",
-                ">"
-              );
-              if (res[i].star == 1) {
-                this.samples.push(res[i]);
-              }
-            }
-          });
+    more() {
+      this.articlesNum++;
+      getArticles(this.articlesNum).then((res) => {
+        for (let i = 0; i < res.length; i++) {
+          res[i].time = res[i].time.slice(0, 10);
+          this.articles.push(res[i]);
+          if (res[i].star == 1) {
+            this.samples.push(res[i]);
+          }
+        }
+      });
     },
     toTop() {
       window.scroll({
@@ -80,19 +72,16 @@ export default {
       if (scrollTop > 0) {
         this.$store.commit("isScroll");
         if (this.isFirst) {
-          this.isFirst=false;
+          this.isFirst = false;
+          getSample().then((res) => {
+            for (let i = 0; i < res.length; i++) {
+              this.samples.push(res[i]);
+            }
+          });
           getArticles(this.articlesNum).then((res) => {
             for (let i = 0; i < res.length; i++) {
               res[i].time = res[i].time.slice(0, 10);
               this.articles.push(res[i]);
-              this.articles[i].content = this.articles[i].content.replaceAll(
-                "&lt;",
-                "<"
-              );
-              this.articles[i].content = this.articles[i].content.replaceAll(
-                "&gt;",
-                ">"
-              );
               if (res[i].star == 1) {
                 this.samples.push(res[i]);
               }

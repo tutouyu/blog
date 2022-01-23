@@ -61,7 +61,7 @@ export default {
           mail: content.mail,
           content: content.content,
           time: myDate.toLocaleDateString(),
-           parent: this.children[(this.currentPage - 1) * 4 + index].id,
+          parent: this.children[(this.currentPage - 1) * 4 + index].id,
           id: this.$store.state.length + 1,
           system: res.terminal,
           browser: res.browser,
@@ -114,8 +114,8 @@ export default {
     width: 600px;
     padding: 15px;
     margin-left: 20px;
-    background-color: rgba(170, 170, 170, 0.7);
-     box-shadow: 0px 0px 5px #2e2d2d;
+    background-color: rgba(206, 206, 206, 0.9);
+    box-shadow: 0px 0px 5px #2e2d2d;
     .parent {
       padding: 5px;
     }

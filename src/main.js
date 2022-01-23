@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './assets/icon/iconfont.css'
-import { Button, Pagination, Input, Drawer, Menu, Upload, Table, Dialog, Row, Col } from "element-ui";
 import 'element-ui/lib/theme-chalk/index.css';
 import VueQuillEditor from 'vue-quill-editor'
 import xss from 'xss'
@@ -12,21 +11,14 @@ import 'quill/dist/quill.snow.css' // for snow theme
 import 'quill/dist/quill.bubble.css' // for bubble theme
 import VueCookies from 'vue-cookies'
 import VueLazyload from 'vue-lazyload'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 import VueVirtualScroller from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
+Vue.use(ElementUI);
 Vue.use(VueVirtualScroller)
 Vue.use(VueLazyload)
-Vue.use(Pagination);
-Vue.use(Button);
-Vue.use(Input);
-Vue.use(Drawer);
-Vue.use(Menu);
-Vue.use(Upload);
-Vue.use(Table);
-Vue.use(Dialog);
-Vue.use(Row);
-Vue.use(Col);
 // or with options
 Vue.use(VueLazyload, {
   preLoad: 1.3,

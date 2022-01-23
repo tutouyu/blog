@@ -3,7 +3,7 @@
     <el-row class="tac">
       <el-col :span="3">
         <el-menu
-          default-active="2"
+          default-active="6"
           class="el-menu-vertical-demo nav"
           background-color="#545c64"
           text-color="#fff"
@@ -18,25 +18,17 @@
             <i class="el-icon-menu"></i>
             <span slot="title">编辑博客</span>
           </el-menu-item>
-          <el-menu-item index="3">
-            <i class="el-icon-menu"></i>
-            <span slot="title">番剧</span>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-menu"></i>
-            <span slot="title">音乐</span>
-          </el-menu-item>
-          <el-menu-item index="5">
-            <i class="el-icon-menu"></i>
-            <span slot="title">游戏</span>
-          </el-menu-item>
           <el-menu-item index="6">
             <i class="el-icon-menu"></i>
             <span slot="title">分类</span>
           </el-menu-item>
+          <el-menu-item index="4">
+            <i class="el-icon-menu"></i>
+            <span slot="title">直播</span>
+          </el-menu-item>
         </el-menu>
       </el-col>
-      <el-col :span="20">
+      <el-col :span="21">
         <el-table
           :data="
             tableData.filter(
@@ -68,26 +60,35 @@
           </el-table-column>
         </el-table>
         <div class="list">
-          <el-input
-            type="textarea"
-            autosize
-            placeholder="请输入分类"
-            v-model="textarea1"
-            class="input"
+          <el-button
+            type="warning"
+            round
+            class="button"
+            @click="dialogVisible = true"
+            style="margin-left: 500px"
+            >添加</el-button
           >
-          </el-input>
-          <el-input
-            type="textarea"
-            autosize
-            placeholder="请输入标签"
-            v-model="textarea2"
-            class="input"
-          >
-          </el-input>
-          <el-button type="warning" round class="button" @click="add">添加</el-button>
         </div>
       </el-col>
     </el-row>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <el-input
+        placeholder="请输入分类"
+        v-model="newType"
+        style="margin: 20px 0"
+      >
+      </el-input>
+      <el-input placeholder="请输入标签" v-model="newTag"> </el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addType">确 定</el-button>
+      </span>
+    </el-dialog>
     <el-dialog
       title="编辑"
       :visible.sync="editFormVisible"
@@ -97,6 +98,9 @@
     >
       <el-form :model="editForm" label-width="80px" ref="editForm">
         <el-form-item label="分类" prop="type">
+          <el-input v-model="editForm.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="标签" prop="tag">
           <el-input v-model="editForm.name" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -111,32 +115,37 @@
 </template>
 
 <script>
+import { getType, delType, addType, editType } from "@/network/type.js";
 import editor from "./Child/editor.vue";
 export default {
   data() {
     return {
+      newType: "",
+      newTag: "",
       textarea1: "",
       textarea2: "",
       search: "",
+      dialogVisible: false,
       editFormVisible: false,
       activeIndex: "1",
-      tableData: [
-        {
-          type: "技术",
-          tag: "vue",
-        },
-      ],
+      tableData: [],
       editIndex: "",
       editForm: {
-        title: "",
         type: "",
         tag: "",
-        content: "",
+        id: 0,
       },
     };
   },
   components: {
     editor,
+  },
+  created() {
+    getType().then((res) => {
+      for (let i = 0; i < res.length; i++) {
+        this.tableData.push(res[i]);
+      }
+    });
   },
   mounted() {
     this.$nextTick(function () {
@@ -144,24 +153,25 @@ export default {
     });
   },
   methods: {
-     add() {
-      setType(this.textarea1, this.textarea2).then(
-        (res) => {}
-      );
+    addType() {
+      addType(this.newType, this.newTag, 0).then((res) => {
+        this.tableData.push({
+          type: this.newType,
+          tag: this.newTag,
+          id: this.tableData.length,
+        });
+      });
+      this.dialogVisible = false;
     },
     select(index) {
       if (index == 1) {
         this.$router.push("admin");
       } else if (index == 2) {
         this.$router.push("edite");
-      } else if (index == 3) {
-        this.$router.push("addAnime");
-      } else if (index == 4) {
-        this.$router.push("addMusic");
-      } else if (index == 5) {
-        this.$router.push("addGame");
       } else if (index == 6) {
         this.$router.push("type");
+      } else if (index == 4) {
+        this.$router.push("view");
       }
     },
     handleEdit(index, row) {
@@ -170,17 +180,23 @@ export default {
       this.editForm = Object.assign({}, row); //这句是关键！！！
     },
     handleClose(done) {
-      /*done();
-                location.reload();*/
       this.editFormVisible = false;
     },
     handleCancel(formName) {
       this.editFormVisible = false;
     },
     handleUpdate(forName) {
+      editType(this.editForm.type, this.editForm.tag, this.editForm.id).then(
+        (res) => {}
+      );
       this.editFormVisible = false;
     },
     handleDelete(index, row) {
+      delType(
+        this.tableData[index].type,
+        this.tableData[index].tag,
+        this.tableData[index].id
+      ).then((res) => {});
       this.tableData.splice(index, 1);
     },
   },
@@ -198,7 +214,7 @@ export default {
   .list {
     margin-left: 180px;
     width: 90vw;
-    margin-top: 60px;
+    margin-top: 10px;
   }
   .content {
     height: 50vh;
